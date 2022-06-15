@@ -4,39 +4,37 @@ const numberOfFilms = parseInt(prompt('Сколько фильмов Вы уже
 
 const personalMovieDB = {
     count: numberOfFilms,
-    movies: {
-        makeRank: function () {
-            for (let i = 0; i < 2; i++) {
-                let
-                    name = prompt('Один из последних просмотренных фильмов?'),
-                    rank = parseInt(prompt(
-                        `На сколько вы его оцените по \
-                десятибальной шкале? (введите число)`));
-                if (name !== null && rank !== null && name.length < 50) {
-                    personalMovieDB.movies[name] = rank;
-                } else {
-                    console.log('Error');
-                    i--;
-                }
-            }
-        }
-    },
+    movies: {},
     actors: {},
     genres: {},
     privat: false,
+    makeRank: function () {
+        for (let i = 0; i < 2; i++) {
+            let
+                name = prompt('Один из последних просмотренных фильмов?'),
+                rank = parseInt(prompt(
+                    `На сколько вы его оцените по десятибальной шкале?`));
+            if (name !== null && rank !== null && name.length < 50) {
+                personalMovieDB.movies[name] = rank;
+            } else {
+                console.log('Error');
+                i--;
+            }
+        }
+    },
+    writeYourGenres: function () {
+        for (let i = 1; i < 4; i++) {
+            let genre =
+                prompt(`Назовите ваш любимый жанр под номером ${i}`);
+            personalMovieDB.genres[i] = genre;
+        }
+    },
+    showMyDB: function () {
+        if (personalMovieDB.privat === false) {
+            console.log(personalMovieDB);
+        }
+    }
 };
-
-// const
-//     movieName = prompt('Один из последних просмотренных фильмов?'),
-//     movieRank = parseInt(prompt(
-//         'На сколько вы его оцените по десятибальной шкале? (введите число)')),
-//     secondMovieName = prompt(
-//         'А можно еще один из последних просмотренных фильмов?'),
-//     secondMovieRank = parseInt(prompt(
-//         'А этот на сколько оцените по десятибальной шкале? (введите число)'));
-
-// personalMovieDB.movies.makeRank(movieName, movieRank);
-// personalMovieDB.movies.makeRank(secondMovieName, secondMovieRank);
 
 if (personalMovieDB.count < 10) {
     console.log('просмотрено довольно мало фильмов');
@@ -48,5 +46,6 @@ if (personalMovieDB.count < 10) {
     console.log('Произошла ошибка, вероятно, было введено некорректное число');
 }
 
-personalMovieDB.movies.makeRank();
-console.log(personalMovieDB.movies);
+personalMovieDB.makeRank();
+personalMovieDB.writeYourGenres();
+personalMovieDB.showMyDB();
