@@ -15,7 +15,9 @@ const options = {
 
 options.makeTest();
 
-const { border } = options.colors;
+const {
+    border
+} = options.colors;
 console.log(border);
 
 
@@ -23,7 +25,7 @@ console.log(border);
 delete options.makeTest;
 console.log(options);
 
-let counter = 0;  // для подсчета элементов в объекте
+let counter = 0; // для подсчета элементов в объекте
 for (let key in options) {
     counter++;
     if (typeof (options[key]) === 'object') {
@@ -37,3 +39,22 @@ for (let key in options) {
 console.log(counter);
 
 console.log(Object.keys(options).length);
+
+
+// геттеры сеттеры
+let user = {
+    name: "John",
+    surname: "Smith",
+
+    get fullName() {
+        return `${this.name} ${this.surname}`;
+    },
+
+    set fullName(value) {
+        [this.name, this.surname] = value.split(" ");
+    }
+};
+
+user.fullName = "Alice Cooper";
+console.log(user);
+console.log(user.fullName); 
