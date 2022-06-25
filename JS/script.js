@@ -1,11 +1,11 @@
 "use strict";
 
-const arr = [1, 2, 3, 6, 8];
+const arr = [41, 2, 7, 22, 13, 56, 8];
 
 arr.pop(); //удаляет последний элемент массива
 console.log(arr);
 
-arr.push(10); // добавляет элемнет в конец массива
+arr.push(10); // добавляет элемент в конец массива
 console.log(arr);
 
 //обычный цикл перебора
@@ -23,6 +23,17 @@ arr.forEach(function (item, i, arr) {
     console.log(
         `под индексом ${i}: будет элемент ${item} в массиве ${arr}`);
 });
+
+//sort по умолчанию сортирует как строки
+arr.sort();
+console.log(arr);
+
+// чтоб sort заработал по числам, ему надо задать функцию
+function compareNum(a, b) {
+    return a - b;
+}
+arr.sort(compareNum);
+console.log(arr);
 
 // глюки массивов:
 arr[99] = 0;
