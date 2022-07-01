@@ -22,7 +22,8 @@ const personalMovieDB = {
         } else if (this.count > 30) {
             console.log('Вы киноман!');
         } else {
-            console.log('Произошла ошибка, вероятно, было введено некорректное число');
+            console.log(
+                'Произошла ошибка, вероятно, было введено некорректное число');
         }
     },
     rememberMyFilms: function () {
