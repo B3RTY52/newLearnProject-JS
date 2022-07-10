@@ -74,7 +74,7 @@ hearts[1].replaceWith(circles[0]);
 
 //вписать текст
 div.innerHTML = '<h1 style=font-size:26px;>Hello, white!</h1>';
-//.textContent просто для текста
+//div.textContent просто для текста
 
 
 div.insertAdjacentHTML('beforebegin', '<h2>Hello, black!</h2>');
