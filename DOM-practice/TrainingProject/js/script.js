@@ -19,7 +19,8 @@ P.S. Здесь есть несколько вариантов решения з
 
 const movieList = document.querySelector('.promo__interactive-list'),
     approveBtn = document.querySelector('.add button'),
-    newMovieInput = document.querySelector('.adding__input');
+    newMovieInput = document.querySelector('.adding__input'),
+    favorite = document.querySelector('form input[type="checkbox"]');
 
 document.querySelector('.promo__genre').textContent = 'Драма';
 
@@ -66,11 +67,16 @@ approveBtn.addEventListener('click', (e) => {
         if (newMovie.length > 21) {
             newMovie = newMovie.slice(0, 20) + '...';
         }
+        if (favorite.checked == true) {
+            console.log("Добавляем любимый фильм");
+            favorite.checked = false;
+        }
         movieDB.movies.push(newMovie);
         listRender();
         newMovieInput.value = '';
     }
 });
+
 
 
 listRender();
