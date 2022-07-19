@@ -20,9 +20,10 @@ P.S. Здесь есть несколько вариантов решения з
 window.addEventListener('DOMContentLoaded', () => {
 
     const movieList = document.querySelector('.promo__interactive-list'),
-        approveBtn = document.querySelector('.add button'),
+        approveBtn = document.querySelector('form'),
         newMovieInput = document.querySelector('.adding__input'),
-        favorite = document.querySelector('[type="checkbox"]');
+        favorite = document.querySelector('[type="checkbox"]'),
+        adv = document.querySelectorAll('.promo__adv img');
 
     document.querySelector('.promo__genre').textContent = 'Драма';
 
@@ -39,16 +40,15 @@ window.addEventListener('DOMContentLoaded', () => {
         ],
     };
 
-    function removeAdv() {
-        document.querySelectorAll('.promo__adv img')
-            .forEach(el => el.remove());
-    }
+    const removeAdv = (arr) => {
+        arr.forEach(el => el.remove());
+    };
 
-    function listRender() {
-        movieList.innerHTML = '';
+    function listRender(films, parent) {
+        parent.innerHTML = '';
         movieDB.movies.sort();
-        movieDB.movies.forEach((movie, i) => {
-            movieList.innerHTML += `
+        films.forEach((movie, i) => {
+            parent.innerHTML += `
     <li class="promo__interactive-item">${i + 1} ${movie}
         <div class="delete"></div></li>
     `;
@@ -56,13 +56,17 @@ window.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.delete').
             forEach((btn, i) => {
                 btn.addEventListener('click', () => {
-                    movieDB.movies.splice(i, 1);
-                    listRender();
+                    films.splice(i, 1);
+                    listRender(films, parent);
                 });
             });
     }
 
-    approveBtn.addEventListener('click', (e) => {
+    const sortArr = (arr) => {
+        arr.sort();
+    };
+
+    approveBtn.addEventListener('submit', (e) => {
         e.preventDefault();
         let newMovie = newMovieInput.value;
         if (newMovieInput.value) {
@@ -75,11 +79,12 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             movieDB.movies.push(newMovie);
             listRender();
-            newMovieInput.value = '';
+            // newMovieInput.value = '';
+            e.target.reset();
         }
     });
 
-    listRender();
-    removeAdv();
+    listRender(movieDB.movies, movieList);
+    removeAdv(adv);
 
 });
