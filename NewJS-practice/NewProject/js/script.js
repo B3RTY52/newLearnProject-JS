@@ -95,4 +95,51 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     setClock('.timer', deadline);
+
+
+    //MODAL
+
+    const modalTrigger = document.querySelectorAll('[data-modal]'),
+        modal = document.querySelector('.modal'),
+        modalClose = document.querySelector('[data-close]');
+
+    function togglerModal() {
+        modal.classList.toggle('show');
+        if (modal.classList.contains('show')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = ''; //поставить настройки по дефолту
+        }
+        clearInterval(modalTimerID);
+    }
+
+    modalTrigger.forEach(btn => btn.addEventListener('click', togglerModal));
+
+    modalClose.addEventListener('click', togglerModal);
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) {
+            togglerModal();
+        }
+    });
+
+    // чтоб окно закрывалось при нажатии на Esc
+    document.addEventListener('keydown', (e) => {
+        if (e.code === "Escape" && modal.classList.contains('show')) {
+            togglerModal();
+        }
+    });
+
+    //чтоб запускалось через 5 секунд само
+    const modalTimerID = setTimeout(togglerModal, 15000);
+
+    // чтоб запускалось при полной прокрутке страницы само
+    function showModalByScroll() {
+        if (window.pageYOffset + document.documentElement.
+            clientHeight >= document.documentElement.scrollHeight - 1) {
+            togglerModal();
+            window.removeEventListener('scroll', showModalByScroll);
+        }
+    }
+    window.addEventListener('scroll', showModalByScroll);
 });
