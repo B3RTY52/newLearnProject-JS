@@ -135,6 +135,9 @@ window.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = ''; //поставить настройки по дефолту
     }
 
+    modalTrigger.forEach(btn =>
+        btn.addEventListener('click', openModal));
+
     modal.addEventListener('click', (e) => {
         if (e.target === e.currentTarget ||
             e.target.getAttribute('data-close') == '') {
@@ -292,7 +295,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const pervModalDialog = document.querySelector('.modal__dialog');
 
         pervModalDialog.classList.add('hide');
-        togglerModal();
+        openModal();
 
         const thanksModal = document.createElement('div');
 
@@ -309,7 +312,7 @@ window.addEventListener('DOMContentLoaded', () => {
             thanksModal.remove();
             pervModalDialog.classList.add('show');
             pervModalDialog.classList.remove('hide');
-            togglerModal();
+            closeModal();
         }, 4000);
     }
 
