@@ -100,44 +100,63 @@ window.addEventListener('DOMContentLoaded', () => {
     //MODAL
 
     const modalTrigger = document.querySelectorAll('[data-modal]'),
-        modal = document.querySelector('.modal'),
-        modalClose = document.querySelector('[data-close]');
+        modal = document.querySelector('.modal');
+    // modalCloseBtn = document.querySelector('[data-close]');
 
-    function togglerModal() {
-        modal.classList.toggle('show');
-        if (modal.classList.contains('show')) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = ''; //поставить настройки по дефолту
-        }
+    // реализация через тогглер:
+    // function togglerModal() {
+    //     modal.classList.toggle('show');
+    //     if (modal.classList.contains('show')) {
+    //         document.body.style.overflow = 'hidden';
+    //     } else {
+    //         document.body.style.overflow = ''; //поставить настройки по дефолту
+    //     }
+    //     clearInterval(modalTimerID);
+    // }
+    // modalTrigger.forEach(btn => btn.addEventListener('click', togglerModal));
+    // modalCloseBtn.addEventListener('click', togglerModal);
+    // чтоб окно закрывалось при нажатии на Esc
+    // document.addEventListener('keydown', (e) => {
+    //     if (e.code === "Escape" && modal.classList.contains('show')) {
+    //         togglerModal();
+    //     }
+    // });
+
+    function openModal() {
+        modal.classList.add('show');
+        modal.classList.remove('hide');
+        document.body.style.overflow = 'hidden';
         clearInterval(modalTimerID);
     }
 
-    modalTrigger.forEach(btn => btn.addEventListener('click', togglerModal));
-
-    modalClose.addEventListener('click', togglerModal);
+    function closeModal() {
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        document.body.style.overflow = ''; //поставить настройки по дефолту
+    }
 
     modal.addEventListener('click', (e) => {
-        if (e.target === e.currentTarget) {
-            togglerModal();
+        if (e.target === e.currentTarget ||
+            e.target.getAttribute('data-close') == '') {
+            closeModal();
         }
     });
 
     // чтоб окно закрывалось при нажатии на Esc
     document.addEventListener('keydown', (e) => {
         if (e.code === "Escape" && modal.classList.contains('show')) {
-            togglerModal();
+            closeModal();
         }
     });
 
-    //чтоб запускалось через 5 секунд само
-    const modalTimerID = setTimeout(togglerModal, 15000);
+    //чтоб запускалось через 50 секунд само
+    const modalTimerID = setTimeout(openModal, 50000);
 
     // чтоб запускалось при полной прокрутке страницы само
     function showModalByScroll() {
         if (window.pageYOffset + document.documentElement.
             clientHeight >= document.documentElement.scrollHeight - 1) {
-            togglerModal();
+            openModal();
             window.removeEventListener('scroll', showModalByScroll);
         }
     }
@@ -242,23 +261,56 @@ window.addEventListener('DOMContentLoaded', () => {
             const request = new XMLHttpRequest();
             request.open('POST', 'server.php');
 
-            // request.setRequestHeader('Content-type', 'multipart/form-data');
+            request.setRequestHeader('Content-type', 'application/json');
             const formData = new FormData(form);
 
-            request.send(formData);
+            const object = {};
+            formData.forEach(function (value, key) {
+                object[key] = value;
+            });
+
+            const json = JSON.stringify(object);
+
+            request.send(json);
 
             request.addEventListener('load', () => {
                 if (request.status === 200) {
                     console.log(request.response);
-                    statusMessage.textContent = message.succes;
+                    showThanksModal(message.succes);
                     form.reset();
                     setTimeout(() => {
                         statusMessage.remove();
                     }, 2000);
                 } else {
-                    statusMessage.textContent = message.failure;
+                    showThanksModal(message.failure);
                 }
             });
         });
     }
+
+    function showThanksModal(message) {
+        const pervModalDialog = document.querySelector('.modal__dialog');
+
+        pervModalDialog.classList.add('hide');
+        togglerModal();
+
+        const thanksModal = document.createElement('div');
+
+        thanksModal.classList.add('modal__dialog');
+        thanksModal.innerHTML = `
+        <div class="modal__content">
+            <div data-close class="modal__close">&times;</div>
+            <div class="modal__title">${message}</div>
+        </div>
+        `;
+
+        document.querySelector('.modal').append(thanksModal);
+        setTimeout(() => {
+            thanksModal.remove();
+            pervModalDialog.classList.add('show');
+            pervModalDialog.classList.remove('hide');
+            togglerModal();
+        }, 4000);
+    }
+
 });
