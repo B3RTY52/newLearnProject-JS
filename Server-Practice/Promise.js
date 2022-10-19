@@ -100,4 +100,25 @@ req.then((product) => {
 
 
 //еще о методах promise
+const test = time => {
+    return new Promise(resolve => {
+        setTimeout(() => resolve(), time);
+    });
+};
 
+test(1000).then(() => console.log('1000 ms'));
+test(2000).then(() => console.log('2000 ms'));
+
+
+//глобальный метод Promise.all([]) принимает массив с промисами:
+Promise.all([test(500), test(3000)]).then(() => {
+    console.log('all done!');
+});
+//он выполняется тогда, когда все заключенные в него промисы выполнены!
+
+
+//глобальный метод Promise.race([]) тоже принимает массив с промисами:
+Promise.race([test(500), test(3000)]).then(() => {
+    console.log('all done faster!');
+});
+//но выполняется тогда, когда первый заключенный в него промис выполнится!
