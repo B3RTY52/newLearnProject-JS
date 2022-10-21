@@ -265,31 +265,55 @@ window.addEventListener('DOMContentLoaded', () => {
             `;
             form.insertAdjacentElement('afterend', statusMessage);
 
-            const request = new XMLHttpRequest();
-            request.open('POST', 'server.php');
-
-            request.setRequestHeader('Content-type', 'application/json');
             const formData = new FormData(form);
+
+            //ЗАМЕНИМ СТАРУЮ ТЕХНОЛОГИЮ:
+            // const request = new XMLHttpRequest();
+            // request.open('POST', 'server.php');
+            // request.setRequestHeader('Content-type', 'application/json');
+            // const object = {};
+            // formData.forEach(function (value, key) {
+            //     object[key] = value;
+            // });
+            // const json = JSON.stringify(object);
+            // request.send(json);
+            // request.addEventListener('load', () => {
+            //     if (request.status === 200) {
+            //         console.log(request.response);
+            //         showThanksModal(message.succes);
+            //         form.reset();
+            //         statusMessage.remove();
+            //     } else {
+            //         showThanksModal(message.failure);
+            //     }
+            // });
+            ///////////////
+
+            //НА БОЛЕЕ НОВУЮ С FETCH:
 
             const object = {};
             formData.forEach(function (value, key) {
                 object[key] = value;
             });
 
-            const json = JSON.stringify(object);
-
-            request.send(json);
-
-            request.addEventListener('load', () => {
-                if (request.status === 200) {
-                    console.log(request.response);
+            fetch('server.php', {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(object)
+            })
+                .then(data => data.text())
+                .then(data => {  //data - это данные, которые придут с сервера
+                    console.log(data);
                     showThanksModal(message.succes);
                     form.reset();
                     statusMessage.remove();
-                } else {
+                }).catch(() => {
                     showThanksModal(message.failure);
-                }
-            });
+                }).finally(() => {
+                    form.reset(); //очистка формы нужна в любом случае!
+                });
         });
     }
 
@@ -317,12 +341,5 @@ window.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }, 4000);
     }
-
-    //FETCH API(application programming interface) tech:
-    fetch('https://jsonplaceholder.typicode.com/todos/1') //гетзапрос по адресу
-        .then((response) => response.json()) // возвращает promise
-        .then((json) => console.log(json));
-
-
 
 });
