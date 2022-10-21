@@ -318,4 +318,11 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
+    //FETCH API(application programming interface) tech:
+    fetch('https://jsonplaceholder.typicode.com/todos/1') //гетзапрос по адресу
+        .then((response) => response.json()) // возвращает promise
+        .then((json) => console.log(json));
+
+
+
 });
