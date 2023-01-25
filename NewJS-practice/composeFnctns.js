@@ -21,7 +21,7 @@ const discount = normalizePrice(divide100(multiply20(200)));
 которая будет принимать все эти функции и делать тоже самое. 
 То есть, организовывать композицию функций. 
 Обратите внимание на порядок записи функций - последняя записанная 
-запускается первой и дальше справа налево. Возможно вам понадобится это.
+запускается первой и дальше справа налево. 
 
 const discount = compose(normalizePrice, divide100, multiply20);
 discount(200.0);
@@ -46,6 +46,28 @@ const compose = (a, b, c) => (x) => a(b(c(x)));
 Помните, что вариантов решения всегда несколько. */
 
 
-const compose = () => { };
+const compose1 = (price) => {
+    const multiply20 = (price) => price * 20;
+    const divide100 = (price) => price / 100;
+    const normalizePrice = (price) => price.toFixed(2);
+    const counter = [
+
+    ];
+
+};
 
 const composeWithArgs = () => { };
+
+
+const multiply20 = (price) => price * 20;
+const divide100 = (price) => price / 100;
+const normalizePrice = (price) => price.toFixed(2);
+// const discount = normalizePrice(divide100(multiply20(200)));
+// console.log(discount);
+
+
+const compose = (...fns) => (x) => fns.reduceRight((res, fn) => fn(res), x);
+
+const discount = compose(normalizePrice, divide100, multiply20);
+console.log(discount(200));
+
