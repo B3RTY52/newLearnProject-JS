@@ -43,31 +43,40 @@ const compose = (a, b, c) => (x) => a(b(c(x)));
     composeWithArgs(add1,addAll3)(1,2,3)  => Вернет 7
 
 Если у вас получилось немного по другому, но решение засчитывается - то все в порядке. 
-Помните, что вариантов решения всегда несколько. */
-
-
-const compose1 = (price) => {
-    const multiply20 = (price) => price * 20;
-    const divide100 = (price) => price / 100;
-    const normalizePrice = (price) => price.toFixed(2);
-    const counter = [
-
-    ];
-
-};
+Помните, что вариантов решения всегда несколько. 
 
 const composeWithArgs = () => { };
-
+*/
 
 const multiply20 = (price) => price * 20;
 const divide100 = (price) => price / 100;
 const normalizePrice = (price) => price.toFixed(2);
-// const discount = normalizePrice(divide100(multiply20(200)));
-// console.log(discount);
-
 
 const compose = (...fns) => (x) => fns.reduceRight((res, fn) => fn(res), x);
 
-const discount = compose(normalizePrice, divide100, multiply20);
-console.log(discount(200));
+const discount = compose(normalizePrice, divide100, multiply20)(200);
+console.log(discount);
 
+/*А теперь напишите функцию композиции composeWithArgs, 
+которая принимает сколько угодно аргументов в начале. 
+Пример:
+
+const add1 = function(a){return a + 1}
+const addAll3 = function(a,b,c){return a + b + c}
+composeWithArgs(add1,addAll3)(1,2,3)  => Вернет 7 
+    
+const composeWithArgs = () => {};
+*/
+
+const composeWithArgs = (...fns) =>
+    fns.reduceRight((res, fn) => (...args) => fn(res(...args)));
+
+const add1 = function (a) {
+    return a + 1;
+};
+
+const addAll3 = function (a, b, c) {
+    return a + b + c;
+};
+
+console.log(composeWithArgs(add1, addAll3)(1, 2, 3));
