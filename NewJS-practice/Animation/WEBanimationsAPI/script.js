@@ -2,7 +2,8 @@
 
 const btnPhone = document.querySelector('#iphone'),
     btnMacbook = document.querySelector('#macbook'),
-    images = document.querySelectorAll('img');
+    images = document.querySelectorAll('img'),
+    imageMac = document.querySelector('.computer');
 
 //   первый аргумент - массив для анимации,
 // const phoneAnimation = images[0].animate([
@@ -45,3 +46,37 @@ btnPhone.addEventListener('click', () => {
         phoneAnimation.pause();
     }
 });
+
+function catchMe(a, b) {
+    imageMac.animate([
+        {
+            transform: `translate(${a}px, ${b}px)`,
+        },
+        {
+            transform: `translate(${a}px, ${b}px)`,
+        },
+        {
+            transform: `translate(${a}px, ${b}px)`,
+        }
+    ], {
+        duration: 500,
+        iterations: Infinity
+    });
+}
+
+imageMac.addEventListener('mouseover', () => {
+    const moveCounter = setInterval(() => {
+        let a = (Math.random() * 1000).toFixed(),
+            b = (Math.random() * 100).toFixed();
+        console.log(a);
+        catchMe(a, b);
+    }, 500);
+
+    setTimeout(() => {
+        clearInterval(moveCounter);
+        console.log('stop');
+    }, 15000);
+
+});
+
+
