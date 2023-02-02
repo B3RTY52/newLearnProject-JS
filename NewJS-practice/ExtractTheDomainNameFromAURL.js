@@ -16,7 +16,3 @@ console.log(domainName('http://git_hub.com/carbonfive/raygun'));
 console.log(domainName('http://www.zombie-bites.com'));
 console.log(domainName('https://www.cnet.com'));
 console.log(domainName("www.xakep.ru"));
-
-// function domainName(url){
-//     return url.match(/(?:http(?:s)?:\/\/)?(?:w{3}\.)?([^\.]+)/i)[1];
-//   }
